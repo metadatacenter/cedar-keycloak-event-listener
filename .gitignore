@@ -1,0 +1,16 @@
+logs
+target
+tmp
+.history
+dist
+/.idea
+*.iml
+/out
+/.idea_modules
+/.classpath
+/.project
+/.settings
+
+pom.xml.releaseBackup
+release.properties
+pom.xml.versionsBackup
