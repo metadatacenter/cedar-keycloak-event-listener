@@ -4,6 +4,7 @@ import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
 import org.keycloak.events.admin.AdminEvent;
+import org.keycloak.events.admin.OperationType;
 import org.metadatacenter.util.json.JsonMapper;
 
 import java.util.Map;
@@ -12,26 +13,35 @@ import java.util.Set;
 
 public class GenericEventListenerProvider implements EventListenerProvider {
 
-  private final Set<EventType> eventList;
-  private final String callbackURL;
+  private final Set<EventType> userEventList;
+  private final String userEventCallbackURL;
+  private final Set<OperationType> adminOperationList;
+  private final String adminOperationCallbackURL;
   private final String apiKey;
   private final String clientId;
 
-  public GenericEventListenerProvider(Set<EventType> eventList, String callbackURL, String apiKey, String clientId) {
-    this.eventList = eventList;
-    this.callbackURL = callbackURL;
+  public GenericEventListenerProvider(Set<EventType> userEventList, String userEventCallbackURL, Set<OperationType>
+      adminOperationList, String adminOperationCallbackURL, String apiKey, String clientId) {
+    this.userEventList = userEventList;
+    this.userEventCallbackURL = userEventCallbackURL;
+    this.adminOperationList = adminOperationList;
+    this.adminOperationCallbackURL = adminOperationCallbackURL;
     this.apiKey = apiKey;
     this.clientId = clientId;
   }
 
   @Override
   public void onEvent(Event event) {
-    performCall(callbackURL, apiKey, event, "user");
+    if (userEventList.contains(event.getType())) {
+      performCall(userEventCallbackURL, apiKey, event, "user");
+    }
   }
 
   @Override
   public void onEvent(AdminEvent event, boolean includeRepresentation) {
-    performCall(callbackURL, apiKey, event, "admin");
+    if(adminOperationList.contains(event.getOperationType())) {
+      performCall(adminOperationCallbackURL, apiKey, event, "admin");
+    }
   }
 
   private void performCall(String url, String apiKey, Event event, String eventType) {
