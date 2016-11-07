@@ -4,7 +4,7 @@ import org.keycloak.Config;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.events.EventType;
-import org.keycloak.events.admin.OperationType;
+import org.keycloak.events.admin.ResourceType;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 
@@ -15,15 +15,15 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
   private Set<EventType> userEventList;
   private String userEventCallbackURL;
-  private Set<OperationType> adminOperationList;
-  private String adminOperationCallbackURL;
+  private Set<ResourceType> adminResourceList;
+  private String adminResourceCallbackURL;
   private String apiKey;
   private String clientId;
 
   @Override
   public EventListenerProvider create(KeycloakSession session) {
-    return new GenericEventListenerProvider(userEventList, userEventCallbackURL,
-        adminOperationList, adminOperationCallbackURL,
+    return new GenericEventListenerProvider(session,userEventList, userEventCallbackURL,
+        adminResourceList, adminResourceCallbackURL,
         apiKey, clientId);
   }
 
@@ -38,14 +38,14 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
     }
     userEventCallbackURL = config.get("userEventCallbackURL");
 
-    adminOperationList = new HashSet<>();
-    String[] operations = config.getArray("adminOperationList");
-    if (operations != null) {
-      for (String op : operations) {
-        adminOperationList.add(OperationType.valueOf(op));
+    adminResourceList = new HashSet<>();
+    String[] resourceTypes = config.getArray("adminResourceList");
+    if (resourceTypes != null) {
+      for (String rt : resourceTypes) {
+        adminResourceList.add(ResourceType.valueOf(rt));
       }
     }
-    adminOperationCallbackURL = config.get("adminOperationCallbackURL");
+    adminResourceCallbackURL = config.get("adminResourceCallbackURL");
 
     apiKey = config.get("apiKey");
     clientId = config.get("clientId");
