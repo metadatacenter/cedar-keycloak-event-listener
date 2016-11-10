@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>0.8.3-SNAPSHOT</version>
+    <version>0.8.5-SNAPSHOT</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>0.8.3-SNAPSHOT</version>
+  <version>0.8.5-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>CEDAR Keycloak Event Listener</name>
 
