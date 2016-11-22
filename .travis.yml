@@ -1,0 +1,18 @@
+language: java
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - develop
+  - master
+notifications:
+  email:
+    recipients:
+    - cedar-core-developers@lists.stanford.edu
+    on_success: never
+    on_failure: always
+install: '[ ${TRAVIS_PULL_REQUEST} = ''false'' ] && mvn clean deploy --settings .m2/travis-settings.xml'
+env:
+  global:
+  - secure: vrzH/2a9NsMYPNSdXDXP+ulz9CKYl8WdUqgzB4YfT9f9h3gmswVIkXygR74pVR5Qn5Ekdeg44+cwPZFlf7XyviRLQ6BzcBrljOIG+v0b5HsWDRCCznw+kFyyzx7ZdbQZrTpvnP4hyKzp/YEtu7vsmUzQSEqfKRHrmQNwJFkueCoh9KM0o/p2HqKwRTapfjXCcGrdNLcbzTvujw+C/rEJoc47Uah29pRRdDT0STNyMH3/1Q8F9Bn0WOZl9WrkHQ7/M9z9WzkUW3y45JKmjX9Skss8Ze8Ct1C+a+88ZMFyAvzPmeyCI18ksIftKktCge4KnVgGvXdys9f2mtesewCx2aNy6HeI/pfZjMRAxliknpqyzMl3P9rsm3GbFAU4ndEgzh8YkVRNJM2FMHiNGdzmjdP1J7LO9w32/8c5Sbe2m3Diq4f4iELV0s95lBoFMiTJhU5uehd76UOP4ED+jGMILTe93WO6bXFzlije1ndeAHAZjuqjhIeEO6s1VDmV3qVD24G46qHTx7D6y7ef+dIQO4uxLFZmxANgiXehRmY8GwudPaHwuYhML6SsvhUsFxh3H9C8dx4rmOk7bfMpFJwfmZ+8358Re06jrZbwv9TDpwud4/fr/8B0ElC50F7mqX/PPhUJZZLF9pNsO3nzTaKAgJ7WyZGXzFro6uqn3hFQ4fE=
+  - secure: ouoeh24CedUKh07+QU798XfNRRYmcr3OeU16FEA9smoDmDkMmfslMxnwzm+017iTIo3DqRDSKje3BAzb3xCl0FHfeOjbcR6dV9PfXyiimVH7UQH7peTzS1bdn1hKZzwil7ZDIF9rGhcuAoR/hWs91eYZ4VoVhNQWExYVH/QN8UXEThRwLL3+mqzZ5Fe2qBU5m/mEsq+SjuTBICcyNB0OzGY/Z7ym13oihr2wKNLSSXx8B9fOnbz09+PiGpFGFfttdGIItiQBtiG6szn4u4s7DLvhmR9uQRw7wmuymFTWKXtdPYvyWW+3OD6N8cxNOPxjDW54djr0MPKNjvUkQQoFEbO5l1UuAksdmh1T7zy9P0R7X1VdsyQS9u/rTnDPAwzdpKCG3f1AOhRdncPMrs7cjz+xOiuFRHtHuluFrsqrEMFCbvsnPW/qSUXY6Wy/TKea8iLRib4GbEPwmPmxL/AzBeObVfoQGHKyZBx4l5tgPAicO3AMmsiV8/zxqu5jSfjvS4jhpzZD+1AU1DlSKQWIkPkmpH/O4AN50LWSOyZ3SyNZaY8rBkCPPwOt9XHncjHX40vkq/TWLeUw2m6xjBe1d6n5ofN4EfqmjGGUjI30wLFaNfnBINMO9uUpNyWsOmGUKaDn14CaIYSUYxIO3ie5GpLpzvv94fabXOmMctDgA6g=
