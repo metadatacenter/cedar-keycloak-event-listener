@@ -1,6 +1,5 @@
 package org.metadatacenter.keycloak.provider.events;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
@@ -10,13 +9,17 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.metadatacenter.util.json.JsonMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class GenericEventListenerProvider implements EventListenerProvider {
+
+  private static final Logger log = LoggerFactory.getLogger(GenericEventListenerProvider.class);
+
 
   protected static final String EVENT = "event";
   protected static final String EVENT_USER = "eventUser";
@@ -41,19 +44,34 @@ public class GenericEventListenerProvider implements EventListenerProvider {
     this.adminResourceCallbackURL = adminResourceCallbackURL;
     this.apiKey = apiKey;
     this.clientId = clientId;
+    /*log.info("***********************************************************************************************");
+    log.info("GenericEventListenerProvider constructor");
+    log.info("userEventList:" + userEventList);
+    log.info("userEventCallbackURL:" + userEventCallbackURL);
+    log.info("adminResourceList:" + adminResourceList);
+    log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
+    log.info("clientId:" + clientId);
+    log.info("***********************************************************************************************");*/
   }
 
   @Override
   public void onEvent(Event event) {
-    if (userEventList.contains(event.getType())) {
+    log.info("onEvent:" + event.getType() + ":" + event.getClientId());
+    log.info("vs:" + userEventList + ":" + clientId);
+    if (userEventList.contains(event.getType()) && clientId.equals(event.getClientId())) {
+      log.info("event matches conditions");
       RealmModel realm = session.realms().getRealm(event.getRealmId());
       UserModel user = session.users().getUserById(event.getUserId(), realm);
+      log.info("perform call");
       performCall(userEventCallbackURL, apiKey, event, user);
+      log.info("call was performed");
     }
   }
 
   @Override
   public void onEvent(AdminEvent event, boolean includeRepresentation) {
+    //TODO: implement this later. For now we are not handling admin events
+    /*
     if (adminResourceList.contains(event.getResourceType())) {
       RealmModel realm = session.realms().getRealm(event.getRealmId());
       String representation = event.getRepresentation();
@@ -64,28 +82,30 @@ public class GenericEventListenerProvider implements EventListenerProvider {
         e.printStackTrace();
       }
       if (representationNode != null) {
-        String userId = representationNode.get("id").asText();
-        UserModel user = session.users().getUserById(userId, realm);
-        performCall(adminResourceCallbackURL, apiKey, event, user);
+        if (representationNode.get("id") != null) {
+          String userId = representationNode.get("id").asText();
+          UserModel user = session.users().getUserById(userId, realm);
+          performCall(adminResourceCallbackURL, apiKey, event, user);
+        }
       }
-    }
+    }*/
   }
 
   private void performCall(String url, String apiKey, Event event, UserModel user) {
-    if (clientId.equals(event.getClientId())) {
-      Map<String, Object> map = new HashMap<>();
-      map.put(EVENT, JsonMapper.MAPPER.valueToTree(event));
-      map.put(EVENT_USER, userToMap(user));
-      HttpCallExecutor.post(url, apiKey, map);
-    }
+    Map<String, Object> map = new HashMap<>();
+    map.put(EVENT, JsonMapper.MAPPER.valueToTree(event));
+    map.put(EVENT_USER, userToMap(user));
+    HttpCallExecutor.post(url, apiKey, map);
   }
 
+  /*
   private void performCall(String url, String apiKey, AdminEvent event, UserModel user) {
     Map<String, Object> map = new HashMap<>();
     map.put(EVENT, JsonMapper.MAPPER.valueToTree(event));
     map.put(EVENT_USER, userToMap(user));
     HttpCallExecutor.post(url, apiKey, map);
   }
+  */
 
   private Map<String, Object> userToMap(UserModel user) {
     Map<String, Object> m = new HashMap<>();
