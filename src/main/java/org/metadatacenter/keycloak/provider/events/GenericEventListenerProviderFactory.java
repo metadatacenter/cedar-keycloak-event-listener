@@ -7,11 +7,15 @@ import org.keycloak.events.EventType;
 import org.keycloak.events.admin.ResourceType;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class GenericEventListenerProviderFactory implements EventListenerProviderFactory {
+
+  private static final Logger log = LoggerFactory.getLogger(GenericEventListenerProviderFactory.class);
 
   private Set<EventType> userEventList;
   private String userEventCallbackURL;
@@ -22,7 +26,7 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
   @Override
   public EventListenerProvider create(KeycloakSession session) {
-    return new GenericEventListenerProvider(session,userEventList, userEventCallbackURL,
+    return new GenericEventListenerProvider(session, userEventList, userEventCallbackURL,
         adminResourceList, adminResourceCallbackURL,
         apiKey, clientId);
   }
@@ -49,6 +53,15 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
     apiKey = config.get("apiKey");
     clientId = config.get("clientId");
+
+    log.info("***********************************************************************************************");
+    log.info("GenericEventListenerProviderFactory.init()");
+    log.info("userEventList:" + userEventList);
+    log.info("userEventCallbackURL:" + userEventCallbackURL);
+    log.info("adminResourceList:" + adminResourceList);
+    log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
+    log.info("clientId:" + clientId);
+    log.info("***********************************************************************************************");
   }
 
   @Override

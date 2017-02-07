@@ -20,7 +20,6 @@ public class GenericEventListenerProvider implements EventListenerProvider {
 
   private static final Logger log = LoggerFactory.getLogger(GenericEventListenerProvider.class);
 
-
   protected static final String EVENT = "event";
   protected static final String EVENT_USER = "eventUser";
 
@@ -34,9 +33,9 @@ public class GenericEventListenerProvider implements EventListenerProvider {
   private final String apiKey;
   private final String clientId;
 
-  public GenericEventListenerProvider(KeycloakSession session, Set<EventType> userEventList,
-                                      String userEventCallbackURL, Set<ResourceType> adminResourceList, String
-                                          adminResourceCallbackURL, String apiKey, String clientId) {
+  public GenericEventListenerProvider(KeycloakSession session, Set<EventType> userEventList, String
+      userEventCallbackURL, Set<ResourceType> adminResourceList, String adminResourceCallbackURL, String apiKey,
+                                      String clientId) {
     this.session = session;
     this.userEventList = userEventList;
     this.userEventCallbackURL = userEventCallbackURL;
@@ -44,27 +43,16 @@ public class GenericEventListenerProvider implements EventListenerProvider {
     this.adminResourceCallbackURL = adminResourceCallbackURL;
     this.apiKey = apiKey;
     this.clientId = clientId;
-    /*log.info("***********************************************************************************************");
-    log.info("GenericEventListenerProvider constructor");
-    log.info("userEventList:" + userEventList);
-    log.info("userEventCallbackURL:" + userEventCallbackURL);
-    log.info("adminResourceList:" + adminResourceList);
-    log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
-    log.info("clientId:" + clientId);
-    log.info("***********************************************************************************************");*/
   }
 
   @Override
   public void onEvent(Event event) {
-    log.info("onEvent:" + event.getType() + ":" + event.getClientId());
-    log.info("vs:" + userEventList + ":" + clientId);
+    log.info("KeycloakUserEvent:" + event.getType() + ":" + event.getClientId());
     if (userEventList.contains(event.getType()) && clientId.equals(event.getClientId())) {
-      log.info("event matches conditions");
+      log.info("keycloak event matches conditions:" + userEventCallbackURL);
       RealmModel realm = session.realms().getRealm(event.getRealmId());
       UserModel user = session.users().getUserById(event.getUserId(), realm);
-      log.info("perform call");
       performCall(userEventCallbackURL, apiKey, event, user);
-      log.info("call was performed");
     }
   }
 
