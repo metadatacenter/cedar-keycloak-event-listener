@@ -29,7 +29,8 @@ public abstract class HttpCallExecutor {
       return httpResponse.getStatusLine().getStatusCode();
     } catch (IOException e) {
       e.printStackTrace();
-      return HTTP_INTERNAL_SERVER_ERROR;
+      //TODO: Use a constant here
+      return 500; //HTTP_INTERNAL_SERVER_ERROR;
     }
   }
 }
