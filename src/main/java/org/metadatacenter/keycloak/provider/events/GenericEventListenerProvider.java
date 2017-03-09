@@ -29,18 +29,20 @@ public class GenericEventListenerProvider implements EventListenerProvider {
   private final String userEventCallbackURL;
   private final Set<ResourceType> adminResourceList;
   private final String adminResourceCallbackURL;
+  private final String linkedDataUserBase;
 
   private final String apiKey;
   private final String clientId;
 
   public GenericEventListenerProvider(KeycloakSession session, Set<EventType> userEventList, String
-      userEventCallbackURL, Set<ResourceType> adminResourceList, String adminResourceCallbackURL, String apiKey,
-                                      String clientId) {
+      userEventCallbackURL, Set<ResourceType> adminResourceList, String adminResourceCallbackURL,
+                                      String linkedDataUserBase, String apiKey, String clientId) {
     this.session = session;
     this.userEventList = userEventList;
     this.userEventCallbackURL = userEventCallbackURL;
     this.adminResourceList = adminResourceList;
     this.adminResourceCallbackURL = adminResourceCallbackURL;
+    this.linkedDataUserBase = linkedDataUserBase;
     this.apiKey = apiKey;
     this.clientId = clientId;
   }
@@ -97,7 +99,7 @@ public class GenericEventListenerProvider implements EventListenerProvider {
 
   private Map<String, Object> userToMap(UserModel user) {
     Map<String, Object> m = new HashMap<>();
-    m.put("id", user.getId());
+    m.put("id", linkedDataUserBase + user.getId());
     m.put("firstName", user.getFirstName());
     m.put("lastName", user.getLastName());
     m.put("email", user.getEmail());
