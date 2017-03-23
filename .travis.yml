@@ -1,6 +1,5 @@
 sudo: required
 dist: trusty
-
 language: java
 jdk:
 - oraclejdk8
@@ -12,13 +11,14 @@ cache:
   directories:
   - $HOME/.m2
 notifications:
-  email:
-    recipients:
-    - cedar-core-developers@lists.stanford.edu
-    on_success: never
+  slack:
+    on_success: change
     on_failure: always
-install: '[ ${TRAVIS_PULL_REQUEST} = ''false'' ] && mvn -DskipTests=false clean deploy --settings .m2/travis-settings.xml'
-script: '[ ${TRAVIS_PULL_REQUEST} = ''false'' ] && mvn -DskipTests=true clean --settings .m2/travis-settings.xml'
+    secure: DU88DxtQhaa2h6epNcEyQ/gRTMaH30esI4L+Cwlda+UN6IdAp+Eup53g+jKAORQMFVv/1nFq1QOHxM4s92+t17yywD5iyQwPd9I35TrOwZZ27EBHPJJ4HRRrDm/U0EBcQzlZqbSVcHZJXWD9k6J64MK3jFGll903gBH5oM53UGmvaWJzI1I0F5ySkOuBLrXbXvzHYOoZeuEUmECs27o7u2SIuApB3viTSrOjPtbL5ddrS0FtsfIS7xd9jt2vOEeCy8sRyhK+woWYQFPdzWB9rHDH7nNAukNECVodnTBv+Fexba1xJSOK3YwPRva6CxtCRxHWr+pArqNuLY12+Tx0yWqH/1edDr3I7d37UTGVs47l3Pz4UbUf6nCoWI5a17X6CiQmJgqChcfeGQ/ib5/E19sIO1M6Nlw5LaUBn+bA0TosXTO2Urndyv6mdjUTYEFLFcnD9NN7c9JIDJUOQLMEMz048l5ejOfdi8FGwSCWyq8lZtxEAkwLoSi+uStR7qTi5SH7IbMgSOEkrBsS61SnW8tPQ86XDqi9ooOCsvIEURwdZAeFqnGxJKA1IKYskr7VrzDgI842VykKiZApywjq4C5/0JX1OXEgXH7M21oANopyZqvn3JIc6c80hoGf5lzh5ylLqFXfeAQDZch00fezquFq1PuISH/5vOyfjNz9gAk=
+install: '[ ${TRAVIS_PULL_REQUEST} = ''false'' ] && mvn -DskipTests=false clean deploy
+  --settings .m2/travis-settings.xml'
+script: '[ ${TRAVIS_PULL_REQUEST} = ''false'' ] && mvn -DskipTests=true clean --settings
+  .m2/travis-settings.xml'
 env:
   global:
   - secure: vrzH/2a9NsMYPNSdXDXP+ulz9CKYl8WdUqgzB4YfT9f9h3gmswVIkXygR74pVR5Qn5Ekdeg44+cwPZFlf7XyviRLQ6BzcBrljOIG+v0b5HsWDRCCznw+kFyyzx7ZdbQZrTpvnP4hyKzp/YEtu7vsmUzQSEqfKRHrmQNwJFkueCoh9KM0o/p2HqKwRTapfjXCcGrdNLcbzTvujw+C/rEJoc47Uah29pRRdDT0STNyMH3/1Q8F9Bn0WOZl9WrkHQ7/M9z9WzkUW3y45JKmjX9Skss8Ze8Ct1C+a+88ZMFyAvzPmeyCI18ksIftKktCge4KnVgGvXdys9f2mtesewCx2aNy6HeI/pfZjMRAxliknpqyzMl3P9rsm3GbFAU4ndEgzh8YkVRNJM2FMHiNGdzmjdP1J7LO9w32/8c5Sbe2m3Diq4f4iELV0s95lBoFMiTJhU5uehd76UOP4ED+jGMILTe93WO6bXFzlije1ndeAHAZjuqjhIeEO6s1VDmV3qVD24G46qHTx7D6y7ef+dIQO4uxLFZmxANgiXehRmY8GwudPaHwuYhML6SsvhUsFxh3H9C8dx4rmOk7bfMpFJwfmZ+8358Re06jrZbwv9TDpwud4/fr/8B0ElC50F7mqX/PPhUJZZLF9pNsO3nzTaKAgJ7WyZGXzFro6uqn3hFQ4fE=
