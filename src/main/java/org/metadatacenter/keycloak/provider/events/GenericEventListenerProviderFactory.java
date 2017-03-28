@@ -21,14 +21,14 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
   private String userEventCallbackURL;
   private Set<ResourceType> adminResourceList;
   private String adminResourceCallbackURL;
+  private String linkedDataUserBase;
   private String apiKey;
   private String clientId;
 
   @Override
   public EventListenerProvider create(KeycloakSession session) {
-    return new GenericEventListenerProvider(session, userEventList, userEventCallbackURL,
-        adminResourceList, adminResourceCallbackURL,
-        apiKey, clientId);
+    return new GenericEventListenerProvider(session, userEventList, userEventCallbackURL, adminResourceList,
+        adminResourceCallbackURL, linkedDataUserBase, apiKey, clientId);
   }
 
   @Override
@@ -50,17 +50,19 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
       }
     }
     adminResourceCallbackURL = config.get("adminResourceCallbackURL");
+    linkedDataUserBase = config.get("linkedDataUserBase");
 
     apiKey = config.get("apiKey");
     clientId = config.get("clientId");
 
     log.info("***********************************************************************************************");
     log.info("GenericEventListenerProviderFactory.init()");
-    log.info("userEventList:" + userEventList);
-    log.info("userEventCallbackURL:" + userEventCallbackURL);
-    log.info("adminResourceList:" + adminResourceList);
+    log.info("userEventList           :" + userEventList);
+    log.info("userEventCallbackURL    :" + userEventCallbackURL);
+    log.info("adminResourceList       :" + adminResourceList);
     log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
-    log.info("clientId:" + clientId);
+    log.info("linkedDataUserBase      :" + linkedDataUserBase);
+    log.info("clientId                :" + clientId);
     log.info("***********************************************************************************************");
   }
 
