@@ -56,13 +56,15 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
     clientId = config.get("clientId");
 
     log.info("***********************************************************************************************");
-    log.info("GenericEventListenerProviderFactory.init()");
-    log.info("userEventList           :" + userEventList);
-    log.info("userEventCallbackURL    :" + userEventCallbackURL);
-    log.info("adminResourceList       :" + adminResourceList);
+    log.info("************************** GenericEventListenerProviderFactory.init() *************************");
     log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
-    log.info("linkedDataUserBase      :" + linkedDataUserBase);
+    log.info("adminResourceList       :" + adminResourceList);
+    log.info("apiKey                  :" + (linkedDataUserBase != null && !linkedDataUserBase.isEmpty() ? "found" :
+        "not found"));
     log.info("clientId                :" + clientId);
+    log.info("linkedDataUserBase      :" + linkedDataUserBase);
+    log.info("userEventCallbackURL    :" + userEventCallbackURL);
+    log.info("userEventList           :" + userEventList);
     log.info("***********************************************************************************************");
   }
 
