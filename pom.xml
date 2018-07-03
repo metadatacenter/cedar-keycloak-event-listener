@@ -5,12 +5,12 @@
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>1.8.8</version>
+    <version>1.8.9</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>1.8.8</version>
+  <version>1.8.9</version>
   <packaging>jar</packaging>
   <name>CEDAR Keycloak Event Listener</name>
 
@@ -18,7 +18,7 @@
     <connection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</connection>
     <developerConnection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
-    <tag>release-1.8.8</tag>
+    <tag>release-1.8.9</tag>
   </scm>
 
   <dependencies>
@@ -51,10 +51,21 @@
     </dependency>
 
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
 
+    <!-- This is needed for logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
