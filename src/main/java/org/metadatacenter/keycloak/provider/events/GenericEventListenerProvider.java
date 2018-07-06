@@ -99,7 +99,7 @@ public class GenericEventListenerProvider implements EventListenerProvider {
 
   private Map<String, Object> userToMap(UserModel user) {
     Map<String, Object> m = new HashMap<>();
-    m.put("id", linkedDataUserBase + user.getId());
+    m.put("@id", linkedDataUserBase + user.getId());
     m.put("firstName", user.getFirstName());
     m.put("lastName", user.getLastName());
     m.put("email", user.getEmail());
