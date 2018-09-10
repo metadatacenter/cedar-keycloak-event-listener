@@ -1,6 +1,7 @@
 package org.metadatacenter.keycloak.provider.events;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.metadatacenter.util.json.JsonMapper;
@@ -10,7 +11,8 @@ import java.util.Map;
 
 import static org.metadatacenter.constant.HttpConnectionConstants.CONNECTION_TIMEOUT;
 import static org.metadatacenter.constant.HttpConnectionConstants.SOCKET_TIMEOUT;
-import static org.metadatacenter.constant.HttpConstants.*;
+import static org.metadatacenter.constant.HttpConstants.HTTP_AUTH_HEADER_APIKEY_PREFIX;
+import static org.metadatacenter.constant.HttpConstants.HTTP_HEADER_AUTHORIZATION;
 
 public abstract class HttpCallExecutor {
 
@@ -29,8 +31,7 @@ public abstract class HttpCallExecutor {
       return httpResponse.getStatusLine().getStatusCode();
     } catch (IOException e) {
       e.printStackTrace();
-      //TODO: Use a constant here
-      return 500; //HTTP_INTERNAL_SERVER_ERROR;
+      return HttpStatus.SC_INTERNAL_SERVER_ERROR;
     }
   }
 }
