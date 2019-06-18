@@ -10,7 +10,7 @@
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.3.8-SNAPSHOT</version>
+  <version>2.3.8</version>
   <packaging>jar</packaging>
   <name>CEDAR Keycloak Event Listener</name>
 
@@ -18,7 +18,7 @@
     <connection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</connection>
     <developerConnection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
-    <tag>HEAD</tag>
+    <tag>release-2.3.8</tag>
   </scm>
 
   <dependencies>
