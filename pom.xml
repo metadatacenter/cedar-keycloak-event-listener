@@ -15,8 +15,8 @@
   <name>CEDAR Keycloak Event Listener</name>
 
   <scm>
-    <connection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</connection>
-    <developerConnection>scm:git:git@github.com:metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
+    <connection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</connection>
+    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
     <tag>HEAD</tag>
   </scm>
