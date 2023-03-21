@@ -16,7 +16,6 @@ import java.util.Set;
 public class GenericEventListenerProviderFactory implements EventListenerProviderFactory {
 
   private static final Logger log = LoggerFactory.getLogger(GenericEventListenerProviderFactory.class);
-
   private Set<EventType> userEventList;
   private String userEventCallbackURL;
   private Set<ResourceType> adminResourceList;
@@ -33,27 +32,22 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
   @Override
   public void init(Config.Scope config) {
+    String resourceServerURL = "http://" + System.getenv("CEDAR_NET_GATEWAY") + ":" + System.getenv("CEDAR_RESOURCE_HTTP_PORT");
+
     userEventList = new HashSet<>();
-    String[] events = config.getArray("userEventList");
-    if (events != null) {
-      for (String e : events) {
-        userEventList.add(EventType.valueOf(e));
-      }
-    }
-    userEventCallbackURL = config.get("userEventCallbackURL");
+    userEventList.add(EventType.LOGIN);
+
+    userEventCallbackURL = resourceServerURL + "/command/auth-user-callback";
 
     adminResourceList = new HashSet<>();
-    String[] resourceTypes = config.getArray("adminResourceList");
-    if (resourceTypes != null) {
-      for (String rt : resourceTypes) {
-        adminResourceList.add(ResourceType.valueOf(rt));
-      }
-    }
-    adminResourceCallbackURL = config.get("adminResourceCallbackURL");
-    linkedDataUserBase = config.get("linkedDataUserBase");
+    adminResourceList.add(ResourceType.USER);
 
-    apiKey = config.get("apiKey");
-    clientId = config.get("clientId");
+    adminResourceCallbackURL = resourceServerURL + "/command/auth-admin-callback";
+
+    linkedDataUserBase = "https://metadatacenter.org/users/";
+
+    apiKey = System.getenv("CEDAR_ADMIN_USER_API_KEY");
+    clientId = "cedar-angular-app";
 
     log.info("***********************************************************************************************");
     log.info("************************** GenericEventListenerProviderFactory.init() *************************");
