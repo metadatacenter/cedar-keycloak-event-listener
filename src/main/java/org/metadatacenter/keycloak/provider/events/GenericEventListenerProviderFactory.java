@@ -32,7 +32,7 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
   @Override
   public void init(Config.Scope config) {
-    String resourceServerURL = "http://" + System.getenv("CEDAR_NET_GATEWAY") + ":" + System.getenv("CEDAR_RESOURCE_HTTP_PORT");
+    String resourceServerURL = "http://" + System.getenv("CEDAR_RESOURCE_SERVER_HOST") + ":" + System.getenv("CEDAR_RESOURCE_HTTP_PORT");
 
     userEventList = new HashSet<>();
     userEventList.add(EventType.LOGIN);
