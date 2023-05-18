@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.6.24</version>
+    <version>2.6.25</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.6.24</version>
+  <version>2.6.25</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
 
   <scm>
     <connection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</connection>
-    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git
+    </developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
-    <tag>release-2.6.24</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
 
     <dependency>
       <groupId>org.metadatacenter</groupId>
-      <artifactId>cedar-server-globals-library</artifactId>
+      <artifactId>cedar-model-library</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>fluent-hc</artifactId>
+      <groupId>org.metadatacenter</groupId>
+      <artifactId>cedar-core-library</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -58,22 +62,22 @@
     </dependency>
 
     <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpcore</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-
-    <!-- This is needed for logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>fluent-hc</artifactId>
     </dependency>
 
   </dependencies>
+
 
   <build>
     <finalName>cedar-keycloak-event-listener</finalName>
@@ -109,7 +113,7 @@
             </goals>
             <configuration>
               <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
               </transformers>
             </configuration>
           </execution>
