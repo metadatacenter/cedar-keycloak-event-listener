@@ -18,25 +18,11 @@
 
   <scm>
     <connection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</connection>
-    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git
-    </developerConnection>
+    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
-    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.metadatacenter</groupId>
-      <artifactId>cedar-model-library</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.metadatacenter</groupId>
-      <artifactId>cedar-core-library</artifactId>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.keycloak</groupId>

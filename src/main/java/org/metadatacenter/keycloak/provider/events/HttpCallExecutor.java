@@ -4,15 +4,15 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
-import org.metadatacenter.util.json.JsonMapper;
+import org.metadatacenter.local.JsonMapper;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static org.metadatacenter.constant.HttpConnectionConstants.CONNECTION_TIMEOUT;
-import static org.metadatacenter.constant.HttpConnectionConstants.SOCKET_TIMEOUT;
-import static org.metadatacenter.constant.HttpConstants.HTTP_AUTH_HEADER_APIKEY_PREFIX;
-import static org.metadatacenter.constant.HttpConstants.HTTP_HEADER_AUTHORIZATION;
+import static org.metadatacenter.local.HttpConnectionConstants.CONNECTION_TIMEOUT;
+import static org.metadatacenter.local.HttpConnectionConstants.SOCKET_TIMEOUT;
+import static org.metadatacenter.local.HttpConstants.HTTP_AUTH_HEADER_APIKEY_PREFIX;
+import static org.metadatacenter.local.HttpConstants.HTTP_HEADER_AUTHORIZATION;
 
 public abstract class HttpCallExecutor {
 
