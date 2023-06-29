@@ -6,37 +6,23 @@
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.6.31</version>
+    <version>2.6.32</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.6.31</version>
+  <version>2.6.32</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
 
   <scm>
     <connection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</connection>
-    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git
-    </developerConnection>
+    <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
-    <tag>HEAD</tag>
   </scm>
 
   <dependencies>
-
-    <dependency>
-      <groupId>org.metadatacenter</groupId>
-      <artifactId>cedar-model-library</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.metadatacenter</groupId>
-      <artifactId>cedar-core-library</artifactId>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.keycloak</groupId>
