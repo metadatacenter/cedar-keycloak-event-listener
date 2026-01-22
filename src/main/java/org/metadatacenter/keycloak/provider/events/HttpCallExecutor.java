@@ -1,46 +1,46 @@
 package org.metadatacenter.keycloak.provider.events;
 
-// 5.x Fluent API
-import org.apache.hc.client5.http.fluent.Request;
-import org.apache.hc.client5.http.fluent.Executor;
-import org.apache.hc.core5.http.HttpResponse;
-import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.util.Timeout;
-
-// JSON mapper
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.util.EntityUtils;
+import org.keycloak.connections.httpclient.HttpClientProvider;
+import org.keycloak.models.KeycloakSession;
 import org.metadatacenter.local.JsonMapper;
 
-import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import static org.metadatacenter.local.HttpConnectionConstants.CONNECTION_TIMEOUT;
-import static org.metadatacenter.local.HttpConnectionConstants.SOCKET_TIMEOUT;
 import static org.metadatacenter.local.HttpConstants.HTTP_AUTH_HEADER_APIKEY_PREFIX;
 import static org.metadatacenter.local.HttpConstants.HTTP_HEADER_AUTHORIZATION;
 
+public final class HttpCallExecutor {
 
-public abstract class HttpCallExecutor {
+  private HttpCallExecutor() {}
 
-  private HttpCallExecutor() { }
+  public static int post(KeycloakSession session,
+                         String url,
+                         String apiKey,
+                         Map<String, Object> payload) {
 
-  public static int post(String url, String apiKey, Map<String, Object> map) {
     try {
-      String bodyString = JsonMapper.MAPPER.writeValueAsString(map);
+      String body = JsonMapper.MAPPER.writeValueAsString(payload);
 
-      // 1) Build the 5.x Fluent Request
-      Request request = Request.post(url)
-          .bodyString(bodyString, ContentType.APPLICATION_JSON)
-          .connectTimeout(Timeout.ofMilliseconds(CONNECTION_TIMEOUT))
-          .responseTimeout(Timeout.ofMilliseconds(SOCKET_TIMEOUT));
-      request.addHeader(HTTP_HEADER_AUTHORIZATION, HTTP_AUTH_HEADER_APIKEY_PREFIX + apiKey);
+      HttpPost post = new HttpPost(url);
+      post.setHeader(HTTP_HEADER_AUTHORIZATION,
+          HTTP_AUTH_HEADER_APIKEY_PREFIX + apiKey);
+      post.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
 
-      // 2) Execute with your pooled Executor
-      Executor executor = HttpClientFactory.executor();
-      HttpResponse response = executor.execute(request).returnResponse();
-      return response.getCode();
-    } catch (IOException e) {
+      HttpClientProvider provider =
+          session.getProvider(HttpClientProvider.class);
+
+      HttpResponse response = provider.getHttpClient().execute(post);
+      EntityUtils.consumeQuietly(response.getEntity());
+
+      return response.getStatusLine().getStatusCode();
+
+    } catch (Exception e) {
       e.printStackTrace();
       return HttpStatus.SC_INTERNAL_SERVER_ERROR;
     }
