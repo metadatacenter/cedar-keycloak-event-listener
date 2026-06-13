@@ -63,7 +63,7 @@ public class GenericEventListenerProvider implements EventListenerProvider {
     Map<String, Object> map = new HashMap<>();
     map.put(EVENT, JsonMapper.MAPPER.valueToTree(event));
     map.put(EVENT_USER, userToMap(user));
-    HttpCallExecutor.post(url, apiKey, map);
+    HttpCallExecutor.post(session, url, apiKey, map);
   }
 
   private Map<String, Object> userToMap(UserModel user) {

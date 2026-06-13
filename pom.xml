@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.8.0</version>
+    <version>2.8.2</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.8.0</version>
+  <version>2.8.2</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
@@ -52,25 +52,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- HttpClient (provided by Keycloak runtime) -->
-    <dependency>
-      <groupId>org.apache.httpcomponents.core5</groupId>
-      <artifactId>httpcore5</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5-fluent</artifactId>
       <scope>provided</scope>
     </dependency>
 
