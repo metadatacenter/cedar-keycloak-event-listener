@@ -28,14 +28,18 @@ jobs:
       CEDAR_NET_GATEWAY: 127.0.0.1
       CEDAR_ADMIN_USER_API_KEY: "1234"
       CEDAR_ADMIN_USER_PASSWORD: adminPassword
+      CEDAR_CADSR_ADMIN_USER_API_KEY: "5678"
       CEDAR_SALT_API_KEY: saltme
       CEDAR_VALIDATION_ENABLED: "true"
       CEDAR_CADSR_ONTOLOGIES_FOLDER: /tmp/cadsr-ontologies
       CEDAR_TRUSTED_FOLDERS: '{\"caDSR\":[\"https://repo.metadatacenter.orgx/folders/00000000-1111-2222-3333-444444444444\"]}'
       CEDAR_SUBMISSION_TEMPLATE_ID_1: http://template-id-1
       CEDAR_SUBMISSION_TEMPLATE_ID_2: http://template-id-2
-      CEDAR_TEST_USER1_ID: https://metadatacenter.orgx/users/test-user-1
-      CEDAR_TEST_USER2_ID: https://metadatacenter.orgx/users/test-user-2
+      # These must sit under linkedData.usersBase from cedar-main.yml
+      # (https://metadatacenter.org/users/), or the profile-ownership check
+      # rejects the test user's own profile with a 403.
+      CEDAR_TEST_USER1_ID: https://metadatacenter.org/users/11111111-2222-3333-4444-555555555555
+      CEDAR_TEST_USER2_ID: https://metadatacenter.org/users/66666666-7777-8888-9999-000000000000
       CEDAR_NEO4J_HOST: 127.0.0.1
       CEDAR_NEO4J_USER_NAME: neo4j
       CEDAR_NEO4J_USER_PASSWORD: password
@@ -71,6 +75,19 @@ jobs:
       CEDAR_DATACITE_REPOSITORY_PREFIX: "10.5072"
       CEDAR_DATACITE_API_ENDPOINT_URL: https://api.test.datacite.org/dois
       CEDAR_DATACITE_TEMPLATE_ID: http://datacite-template-id
+      # The tests that call BioPortal live are @Tag("bioportal") and excluded by the
+      # application POM; these only satisfy configuration substitution.
+      CEDAR_BIOPORTAL_REST_BASE: https://data.bioontology.org/
+      CEDAR_BIOPORTAL_API_KEY: bioportalApiKey
+      CEDAR_ROR_API_PREFIX: https://api.ror.org/v2/
+      CEDAR_ORCID_TOKEN_PREFIX: https://orcid.org/
+      CEDAR_ORCID_API_PREFIX: https://pub.orcid.org/
+      CEDAR_ORCID_API_CLIENT_ID: orcidClientId
+      CEDAR_ORCID_API_CLIENT_SECRET: orcidClientSecret
+      CEDAR_COMP_TOX_API_PREFIX: https://api-ccte.epa.gov/
+      CEDAR_COMP_TOX_API_KEY: compToxApiKey
+      CEDAR_RRID_API_KEY: rridApiKey
+      CEDAR_PUBMED_API_KEY: pubmedApiKey
       CEDAR_ARTIFACT_SERVER_HOST: 127.0.0.1
       CEDAR_ARTIFACT_HTTP_PORT: "9001"
       CEDAR_ARTIFACT_ADMIN_PORT: "9101"
