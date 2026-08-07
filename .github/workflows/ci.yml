@@ -14,7 +14,9 @@ permissions:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # A push to develop publishes, so only ever cancel superseded
+  # pull-request and manual runs.
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
   test:
@@ -162,6 +164,13 @@ jobs:
 
       - name: Run Maven verification
         run: mvn --batch-mode --no-transfer-progress verify --settings .m2/travis-settings.xml
+
+      # Other repositories resolve this artifact from Nexus, so a merged change
+      # is invisible to their builds until the snapshot is republished. Tests have
+      # already run in the step above; this only uploads what they verified.
+      - name: Publish the snapshot
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        run: mvn --batch-mode --no-transfer-progress deploy -DskipTests --settings .m2/travis-settings.xml
 
       - name: Upload test reports
         if: always()
