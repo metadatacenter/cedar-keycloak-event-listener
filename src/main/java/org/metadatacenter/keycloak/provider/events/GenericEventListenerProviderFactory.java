@@ -53,7 +53,7 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
     log.info("************************** GenericEventListenerProviderFactory.init() *************************");
     log.info("adminResourceCallbackURL:" + adminResourceCallbackURL);
     log.info("adminResourceList       :" + adminResourceList);
-    log.info("apiKey                  :" + (linkedDataUserBase != null && !linkedDataUserBase.isEmpty() ? "found" :
+    log.info("apiKey                  :" + (apiKey != null && !apiKey.isEmpty() ? "found" :
         "not found"));
     log.info("clientId                :" + clientId);
     log.info("linkedDataUserBase      :" + linkedDataUserBase);

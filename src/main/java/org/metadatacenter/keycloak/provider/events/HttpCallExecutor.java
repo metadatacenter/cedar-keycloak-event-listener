@@ -9,6 +9,8 @@ import org.apache.http.util.EntityUtils;
 import org.keycloak.connections.httpclient.HttpClientProvider;
 import org.keycloak.models.KeycloakSession;
 import org.metadatacenter.local.JsonMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -16,6 +18,8 @@ import static org.metadatacenter.local.HttpConstants.HTTP_AUTH_HEADER_APIKEY_PRE
 import static org.metadatacenter.local.HttpConstants.HTTP_HEADER_AUTHORIZATION;
 
 public final class HttpCallExecutor {
+
+  private static final Logger log = LoggerFactory.getLogger(HttpCallExecutor.class);
 
   private HttpCallExecutor() {}
 
@@ -41,7 +45,7 @@ public final class HttpCallExecutor {
       return response.getStatusLine().getStatusCode();
 
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("CEDAR callback request failed before receiving a response: url={}", url, e);
       return HttpStatus.SC_INTERNAL_SERVER_ERROR;
     }
   }

@@ -63,7 +63,11 @@ public class GenericEventListenerProvider implements EventListenerProvider {
     Map<String, Object> map = new HashMap<>();
     map.put(EVENT, JsonMapper.MAPPER.valueToTree(event));
     map.put(EVENT_USER, userToMap(user));
-    HttpCallExecutor.post(session, url, apiKey, map);
+    int statusCode = HttpCallExecutor.post(session, url, apiKey, map);
+    if (statusCode < 200 || statusCode >= 300) {
+      log.error("CEDAR user provisioning callback failed: status={}, url={}, eventType={}, userId={}",
+          statusCode, url, event.getType(), event.getUserId());
+    }
   }
 
   private Map<String, Object> userToMap(UserModel user) {
