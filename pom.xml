@@ -23,8 +23,8 @@
   </scm>
 
   <properties>
-    <!-- Line coverage measured on 2026-10-19: 55.0%. The build fails below this floor. -->
-    <cedar.coverage.line.minimum>0.53</cedar.coverage.line.minimum>
+    <!-- Line coverage measured on 2026-10-19: 97.6%. The build fails below this floor. -->
+    <cedar.coverage.line.minimum>0.95</cedar.coverage.line.minimum>
   </properties>
 
   <dependencies>

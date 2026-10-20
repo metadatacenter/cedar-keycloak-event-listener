@@ -40,6 +40,7 @@ class GenericEventListenerProviderTest {
 
   private KeycloakSession session;
   private CloseableHttpClient httpClient;
+  private StatusLine statusLine;
   private GenericEventListenerProvider listener;
 
   @BeforeEach
@@ -63,7 +64,7 @@ class GenericEventListenerProviderTest {
     HttpClientProvider httpClientProvider = mock(HttpClientProvider.class);
     httpClient = mock(CloseableHttpClient.class);
     CloseableHttpResponse response = mock(CloseableHttpResponse.class);
-    StatusLine statusLine = mock(StatusLine.class);
+    statusLine = mock(StatusLine.class);
     when(session.getProvider(HttpClientProvider.class)).thenReturn(httpClientProvider);
     when(httpClientProvider.getHttpClient()).thenReturn(httpClient);
     when(httpClient.execute(any(HttpUriRequest.class))).thenReturn(response);
@@ -108,6 +109,65 @@ class GenericEventListenerProviderTest {
     listener.onEvent(event(EventType.LOGIN, "another-client"));
 
     verify(httpClient, never()).execute(any(HttpUriRequest.class));
+  }
+
+  /** A login still succeeds when CEDAR refuses the callback, or cannot be reached; the failure is only logged. */
+  @Test
+  void aFailedCallbackDoesNotStopTheLogin() throws Exception {
+    when(statusLine.getStatusCode()).thenReturn(503);
+    listener.onEvent(event(EventType.LOGIN, CLIENT_ID));
+
+    when(httpClient.execute(any(HttpUriRequest.class))).thenThrow(new java.io.IOException("connection refused"));
+    listener.onEvent(event(EventType.LOGIN, CLIENT_ID));
+
+    verify(httpClient, times(2)).execute(any(HttpUriRequest.class));
+  }
+
+  @Test
+  void administrativeEventsAreIgnored() throws Exception {
+    listener.onEvent(new org.keycloak.events.admin.AdminEvent(), true);
+    listener.close();
+
+    verify(httpClient, never()).execute(any(HttpUriRequest.class));
+  }
+
+  /**
+   * Keycloak builds the listener through its factory, which takes the resource server's address and the
+   * administrator's API key from the environment, and answers logins to CEDAR's web client.
+   */
+  @Test
+  void theFactoryBuildsAListenerFromTheEnvironment() throws Exception {
+    java.util.Map<String, String> environment = java.util.Map.of("CEDAR_RESOURCE_SERVER_HOST", "resource",
+        "CEDAR_RESOURCE_HTTP_PORT", "9007", "CEDAR_ADMIN_USER_API_KEY", API_KEY);
+    GenericEventListenerProviderFactory factory = new GenericEventListenerProviderFactory() {
+      @Override
+      protected String environment(String name) {
+        return environment.get(name);
+      }
+    };
+    factory.init(null);
+    factory.postInit(null);
+    assertEquals("CEDAR-event-listener", factory.getId());
+
+    factory.create(session).onEvent(event(EventType.LOGIN, CLIENT_ID));
+    factory.close();
+
+    ArgumentCaptor<HttpUriRequest> requestCaptor = ArgumentCaptor.forClass(HttpUriRequest.class);
+    verify(httpClient, times(1)).execute(requestCaptor.capture());
+    assertEquals(CALLBACK_URL, requestCaptor.getValue().getURI().toString());
+    assertEquals("apiKey " + API_KEY, requestCaptor.getValue().getFirstHeader(HttpHeaders.AUTHORIZATION).getValue());
+  }
+
+  @Test
+  void aFactoryWithoutTheResourceServersAddressStillStarts() {
+    GenericEventListenerProviderFactory factory = new GenericEventListenerProviderFactory() {
+      @Override
+      protected String environment(String name) {
+        return null;
+      }
+    };
+    factory.init(null);
+    assertTrue(factory.create(session) instanceof GenericEventListenerProvider);
   }
 
   private static Event event(EventType type, String clientId) {
