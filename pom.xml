@@ -22,6 +22,11 @@
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
   </scm>
 
+  <properties>
+    <!-- Line coverage measured on 2026-10-19: 55.0%. The build fails below this floor. -->
+    <cedar.coverage.line.minimum>0.53</cedar.coverage.line.minimum>
+  </properties>
+
   <dependencies>
     <!-- Keycloak SPIs (provided by Keycloak runtime) -->
     <dependency>
