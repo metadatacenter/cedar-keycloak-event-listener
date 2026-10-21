@@ -32,7 +32,12 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
   @Override
   public void init(Config.Scope config) {
-    String resourceServerURL = "http://" + System.getenv("CEDAR_RESOURCE_SERVER_HOST") + ":" + System.getenv("CEDAR_RESOURCE_HTTP_PORT");
+    String resourceServerHost = environment("CEDAR_RESOURCE_SERVER_HOST");
+    String resourceServerPort = environment("CEDAR_RESOURCE_HTTP_PORT");
+    if (resourceServerHost == null || resourceServerPort == null) {
+      log.error("CEDAR_RESOURCE_SERVER_HOST and CEDAR_RESOURCE_HTTP_PORT must both be set, or no login reaches CEDAR");
+    }
+    String resourceServerURL = "http://" + resourceServerHost + ":" + resourceServerPort;
 
     userEventList = new HashSet<>();
     userEventList.add(EventType.LOGIN);
@@ -46,7 +51,7 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
 
     linkedDataUserBase = "https://metadatacenter.org/users/";
 
-    apiKey = System.getenv("CEDAR_ADMIN_USER_API_KEY");
+    apiKey = environment("CEDAR_ADMIN_USER_API_KEY");
     clientId = "cedar-angular-app";
 
     log.info("***********************************************************************************************");
@@ -60,6 +65,11 @@ public class GenericEventListenerProviderFactory implements EventListenerProvide
     log.info("userEventCallbackURL    :" + userEventCallbackURL);
     log.info("userEventList           :" + userEventList);
     log.info("***********************************************************************************************");
+  }
+
+  /** The value of an environment variable of the Keycloak process. */
+  protected String environment(String name) {
+    return System.getenv(name);
   }
 
   @Override

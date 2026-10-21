@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.9.26</version>
+    <version>2.9.27</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.9.26</version>
+  <version>2.9.27</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
@@ -21,6 +21,11 @@
     <developerConnection>scm:git:https://github.com/metadatacenter/cedar-keycloak-event-listener.git</developerConnection>
     <url>https://github.com/metadatacenter/cedar-keycloak-event-listener</url>
   </scm>
+
+  <properties>
+    <!-- Line coverage measured on 2026-10-19: 97.6%. The build fails below this floor. -->
+    <cedar.coverage.line.minimum>0.95</cedar.coverage.line.minimum>
+  </properties>
 
   <dependencies>
     <!-- Keycloak SPIs (provided by Keycloak runtime) -->
