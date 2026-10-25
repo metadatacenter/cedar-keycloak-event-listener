@@ -173,6 +173,9 @@ jobs:
       - name: Run Maven verification
         run: ./mvnw --batch-mode --no-transfer-progress --update-snapshots verify --settings .m2/nexus-settings.xml
 
+      - name: Verify provided libraries match the Keycloak host
+        run: python3 scripts/check_keycloak_platform.py --settings .m2/nexus-settings.xml
+
       # Other repositories resolve this artifact from Nexus, so a merged change
       # is invisible to their builds until the snapshot is republished. Tests have
       # already run in the step above; this only uploads what they verified.
@@ -185,5 +188,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: surefire-reports
-          path: "**/target/surefire-reports/**"
+          path: |
+            **/target/surefire-reports/**
+            target/keycloak-platform/**
           if-no-files-found: warn
