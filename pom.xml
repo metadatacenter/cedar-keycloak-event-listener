@@ -4,14 +4,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
+    <!-- The EventListenerProviderFactory service file activates cedar-parent's keycloak-provider
+         profile: provided libraries follow Keycloak's platform, while build and test tools remain
+         shared with CEDAR. scripts/check_keycloak_platform.py verifies that boundary in CI. -->
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.9.28</version>
+    <version>2.9.29</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.9.28</version>
+  <version>2.9.29</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
