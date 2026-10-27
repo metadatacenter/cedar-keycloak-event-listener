@@ -9,12 +9,12 @@
          shared with CEDAR. scripts/check_keycloak_platform.py verifies that boundary in CI. -->
     <groupId>org.metadatacenter</groupId>
     <artifactId>cedar-parent</artifactId>
-    <version>2.9.29</version>
+    <version>2.9.30</version>
   </parent>
 
   <groupId>org.metadatacenter</groupId>
   <artifactId>cedar-keycloak-event-listener</artifactId>
-  <version>2.9.29</version>
+  <version>2.9.30</version>
   <packaging>jar</packaging>
 
   <name>CEDAR Keycloak Event Listener</name>
@@ -28,6 +28,8 @@
   <properties>
     <!-- Line coverage measured on 2026-10-19: 97.6%. The build fails below this floor. -->
     <cedar.coverage.line.minimum>0.95</cedar.coverage.line.minimum>
+    <!-- Branch coverage measured on 2026-10-26: 81.2%. The build fails below this floor. -->
+    <cedar.coverage.branch.minimum>0.79</cedar.coverage.branch.minimum>
   </properties>
 
   <dependencies>
