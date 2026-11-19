@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.keycloak.connections.httpclient.HttpClientProvider;
 import org.keycloak.events.Event;
+import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.events.EventType;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -21,7 +22,12 @@ import org.keycloak.models.UserProvider;
 import org.metadatacenter.local.JsonMapper;
 import org.mockito.ArgumentCaptor;
 
+import java.io.InputStream;
 import java.util.Collections;
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -95,12 +101,45 @@ class GenericEventListenerProviderTest {
     assertTrue(request.getEntity().getContentType().getValue().startsWith("application/json"));
 
     JsonNode body = JsonMapper.MAPPER.readTree(EntityUtils.toString(request.getEntity()));
-    assertEquals("LOGIN", body.at("/event/type").asText());
-    assertEquals(CLIENT_ID, body.at("/event/clientId").asText());
-    assertEquals("https://metadatacenter.org/users/user-id", body.at("/eventUser/@id").asText());
-    assertEquals("Ada", body.at("/eventUser/firstName").asText());
-    assertEquals("Lovelace", body.at("/eventUser/lastName").asText());
-    assertEquals("ada@example.org", body.at("/eventUser/email").asText());
+    JsonNode expected = callbackFixture();
+    assertEquals(names(expected), names(body), "the resource server refuses a body holding anything else");
+    assertEquals(expected.get("eventUser"), body.get("eventUser"),
+        "the resource server reads the user strictly, so it refuses any other property");
+    for (String property : List.of("type", "clientId", "realmId", "userId")) {
+      assertEquals(expected.at("/event/" + property), body.at("/event/" + property), property);
+    }
+  }
+
+  /**
+   * Keycloak finds the listener through the service file, by the class it names, and identifies it by
+   * the factory's identifier, which the realm's event configuration names.
+   */
+  @Test
+  void keycloakFindsTheFactoryThroughItsServiceFile() {
+    List<EventListenerProviderFactory> factories = ServiceLoader.load(EventListenerProviderFactory.class).stream()
+        .filter(provider -> provider.type().getName().startsWith("org.metadatacenter."))
+        .map(ServiceLoader.Provider::get)
+        .toList();
+
+    assertEquals(1, factories.size(), factories::toString);
+    assertEquals("CEDAR-event-listener", factories.get(0).getId());
+  }
+
+  /**
+   * The body the resource server's login callback accepts: exactly {@code event} and {@code eventUser}.
+   * The resource server reads the event tolerantly, since Keycloak defines its properties, and the user
+   * strictly, as the four properties shown.
+   */
+  private static JsonNode callbackFixture() throws Exception {
+    try (InputStream in = GenericEventListenerProviderTest.class.getResourceAsStream("/auth-user-callback.json")) {
+      return JsonMapper.MAPPER.readTree(in);
+    }
+  }
+
+  private static Set<String> names(JsonNode object) {
+    Set<String> names = new TreeSet<>();
+    object.fieldNames().forEachRemaining(names::add);
+    return names;
   }
 
   @Test

@@ -1,0 +1,20 @@
+{
+  "event": {
+    "id": null,
+    "time": 0,
+    "type": "LOGIN",
+    "realmId": "realm-id",
+    "clientId": "cedar-angular-app",
+    "userId": "user-id",
+    "sessionId": null,
+    "ipAddress": null,
+    "error": null,
+    "details": null
+  },
+  "eventUser": {
+    "@id": "https://metadatacenter.org/users/user-id",
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "email": "ada@example.org"
+  }
+}
