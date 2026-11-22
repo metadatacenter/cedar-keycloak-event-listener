@@ -1,0 +1,51 @@
+name: Dependency graph
+
+# GitHub's dependency graph reads versions only from the pom, and a CEDAR pom inherits every version
+# from cedar-parent, so the graph records none and Dependabot can check no dependency this repository
+# resolves. This job resolves the complete tree and submits it to the graph. It runs on main, the
+# default branch Dependabot reads, so the alerts describe what each release ships.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dependency-graph-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  submit:
+    name: Submit the resolved Maven dependency tree
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      BMIR_NEXUS_USERNAME: ${{ secrets.BMIR_NEXUS_USERNAME }}
+      BMIR_NEXUS_PASSWORD: ${{ secrets.BMIR_NEXUS_PASSWORD }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Restore the Maven repository
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-${{ runner.os }}-
+
+      - name: Submit the dependency tree
+        uses: advanced-security/maven-dependency-submission-action@a64327a7329c9939cf675e458452febe1894a70c # v6.0.1
+        with:
+          settings-file: .m2/nexus-settings.xml
