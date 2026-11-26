@@ -72,6 +72,13 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Keep the host's annotation dependency provided even when JUnit also brings it in. -->
+    <dependency>
+      <groupId>org.jspecify</groupId>
+      <artifactId>jspecify</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- Jackson (provided by Keycloak runtime) -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
